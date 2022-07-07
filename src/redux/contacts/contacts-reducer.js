@@ -1,10 +1,34 @@
 import { combineReducers } from "redux";
 import { createReducer } from "@reduxjs/toolkit";
-import { addContact, deleteContact, changeFilter } from './contacts-actions';
+import {
+    fetchContactRequest,
+    fetchContactSuccess,
+    fetchContactError,
+    addContactRequest,
+    addContactSuccess,
+    addContactError,
+    deleteContactRequest,
+    deleteContactSuccess,
+    deleteContactError,
+    changeFilter
+} from './contacts-actions';
 
 const items = createReducer([], {
-    [addContact]: (state, { payload }) => [...state, payload],
-    [deleteContact]: (state, { payload }) => state.filter(({ id }) => id !== payload),
+    [fetchContactSuccess]: (_, { payload }) => payload,
+    [addContactSuccess]: (state, { payload }) => [...state, payload],
+    [deleteContactSuccess]: (state, { payload }) => state.filter(({ id }) => id !== payload),
+});
+
+const loading = createReducer(false, {
+    [fetchContactRequest]: () => true,
+    [fetchContactSuccess]: () => false,
+    [fetchContactError]: () => false,
+    [addContactRequest]: () => true,
+    [addContactSuccess]: () => false,
+    [addContactError]: () => false,
+    [deleteContactRequest]: () => true,
+    [deleteContactSuccess]: () => false,
+    [deleteContactError]: () => false,
 });
 
 const filter = createReducer('', {
@@ -13,37 +37,6 @@ const filter = createReducer('', {
 
 export default combineReducers({
     items,
-    filter
+    filter,
+    loading,
 });
-
-
-
-// ===============================================================================
-// redux
-
-// const items = (state = [], { type, payload }) => {
-//     switch (type) {
-//         case types.ADD:
-//             return [...state, payload];
-        
-//         case types.DELETE:
-//             return state.filter(({id}) => id !== payload);
-        
-//         default:
-//             return state;
-//     };
-// };
-
-
-
-
-
-// const filter = (state = '', {type, payload}) => {
-//     switch (type) {
-//         case [actions.changeFilter]:
-//             return payload;
-        
-//         default:
-//             return state;
-//     };
-// };
