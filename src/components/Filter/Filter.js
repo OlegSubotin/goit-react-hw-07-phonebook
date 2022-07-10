@@ -1,14 +1,13 @@
 import React from "react";
 import { nanoid } from "nanoid";
 import { useSelector, useDispatch } from "react-redux";
-import { changeFilter } from "../../redux/contacts/contacts-actions";
-import { getFilter } from "redux/contacts/contacts-selectors";
+import { contactsActions, contactsSelectors } from "redux/contacts";
 import s from './Filter.module.css';
 
 const searchInputId = nanoid();
 
 const Filter = () => {
-    const value = useSelector(getFilter);
+    const value = useSelector(contactsSelectors.getFilter);
     const dispatch = useDispatch();
 
     return (
@@ -19,7 +18,7 @@ const Filter = () => {
                 className={s.input}
                 type='text'
                 value={value}
-                onChange={e => dispatch(changeFilter(e.target.value))}
+                onChange={e => dispatch(contactsActions.changeFilter(e.target.value))}
             />
         </div>
     );

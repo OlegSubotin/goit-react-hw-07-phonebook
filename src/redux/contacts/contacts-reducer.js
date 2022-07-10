@@ -1,9 +1,9 @@
 import { combineReducers } from "redux";
 import { createReducer } from "@reduxjs/toolkit";
 import {
-    fetchContactRequest,
-    fetchContactSuccess,
-    fetchContactError,
+    // fetchContactRequest,
+    // fetchContactSuccess,
+    // fetchContactError,
     addContactRequest,
     addContactSuccess,
     addContactError,
@@ -12,17 +12,19 @@ import {
     deleteContactError,
     changeFilter
 } from './contacts-actions';
+import { fetchContacts } from "./contacts-operations";
 
 const items = createReducer([], {
-    [fetchContactSuccess]: (_, { payload }) => payload,
+    [fetchContacts.fulfilled]: (_, { payload }) => payload,
     [addContactSuccess]: (state, { payload }) => [...state, payload],
-    [deleteContactSuccess]: (state, { payload }) => state.filter(({ id }) => id !== payload),
+    [deleteContactSuccess]: (state, { payload }) =>
+        state.filter(({ id }) => id !== payload),
 });
 
 const loading = createReducer(false, {
-    [fetchContactRequest]: () => true,
-    [fetchContactSuccess]: () => false,
-    [fetchContactError]: () => false,
+    [fetchContacts.pending]: () => true,
+    [fetchContacts.fulfilled]: () => false,
+    [fetchContacts.rejected]: () => false,
     [addContactRequest]: () => true,
     [addContactSuccess]: () => false,
     [addContactError]: () => false,
@@ -35,8 +37,14 @@ const filter = createReducer('', {
     [changeFilter]: (_, { payload }) => payload,
 });
 
+const error = createReducer(null, {
+    [fetchContacts.rejected]: (_, { payload }) => payload,
+    [fetchContacts.pending]: () => null,
+});
+
 export default combineReducers({
     items,
     filter,
     loading,
+    error,
 });

@@ -1,9 +1,9 @@
 import s from './ContactsItem.module.css';
 
-const ContactsItem = ({ id, name, number, onContactDelete }) => {
+const ContactsItem = ({ id, name, phone, onContactDelete }) => {
     return (
         <li className={s.item}>
-            <p>{name}: {number}</p>
+            <p>{name}: {phone}</p>
             <button
                 className={s.button}
                 type='button'

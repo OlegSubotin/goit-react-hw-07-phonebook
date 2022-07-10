@@ -1,25 +1,24 @@
 import { useState } from "react";
 import { nanoid } from 'nanoid';
 import { useDispatch, useSelector } from "react-redux";
-import { addContact } from '../../redux/contacts/contacts-operations';
-import { getContacts } from "redux/contacts/contacts-selectors";
+import { contactsOperations, contactsSelectors } from 'redux/contacts';
 import s from './Form.module.css';
 
 function Form() {
     const [name, setName] = useState('');
-    const [number, setNumber] = useState('');
+    const [phone, setPhone] = useState('');
     const dispatch = useDispatch();
-    const contacts = useSelector(getContacts);
+    const contacts = useSelector(contactsSelectors.getContacts);
 
     const nameInputId = nanoid();
-    const numberInputId = nanoid();
+    const phoneInputId = nanoid();
 
     const handleChange = e => {
         const { name, value } = e.currentTarget;
         switch (name) {
             case 'name': setName(value);
                 break;
-            case 'number': setNumber(value);
+            case 'phone': setPhone(value);
                 break;
             default: return;
         };
@@ -27,17 +26,17 @@ function Form() {
 
     const handleSubmit = e => {
         e.preventDefault();
-        if (contacts.find(contact => contact.name === name || contact.number === number)) {
+        if (contacts.find(contact => contact.name === name || contact.phone === phone)) {
             alert(`! ${name} exist in the book !`)
         } else {
-            dispatch(addContact({ name, number }));
+            dispatch(contactsOperations.addContact({ name, phone }));
             reset();
         };        
     }; 
     
     const reset = () => {
         setName('');
-        setNumber('');
+        setPhone('');
     };
 
     return (
@@ -54,17 +53,17 @@ function Form() {
                 onChange={handleChange}
                 id={nameInputId}
             />
-            <label className={s.label} htmlFor={numberInputId}>Number</label>
+            <label className={s.label} htmlFor={phoneInputId}>Number</label>
             <input
                 className={s.input}
                 type="tel"
-                name="number"
+                name="phone"
                 pattern="\+?\d{1,4}?[-.\s]?\(?\d{1,3}?\)?[-.\s]?\d{1,4}[-.\s]?\d{1,4}[-.\s]?\d{1,9}"
                 title="Phone number must be digits and can contain spaces, dashes, parentheses and can start with +"
                 required
-                value={number}
+                value={phone}
                 onChange={handleChange}
-                id={numberInputId}
+                id={phoneInputId}
             />
             <button className={s.submit} type="submit">Add contact</button>
         </form>
