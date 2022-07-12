@@ -1,6 +1,6 @@
 import Section from "components/Section";
 import Form from "components/Form";
-// import Filter from "components/Filter";
+import Filter from "components/Filter";
 import ContactsList from "components/ContactsList";
 
 function App() {
@@ -10,7 +10,7 @@ function App() {
         <Form />
       </Section>
       <Section title={"Contacts"}>
-        {/* <Filter/> */}
+        <Filter/>
         <ContactsList/>
       </Section>
     </>

@@ -1,15 +1,20 @@
+import ClipLoader from "react-spinners/ClipLoader";
+import { useDeleteContactMutation } from 'redux/contacts/contactSlice';
 import s from './ContactsItem.module.css';
 
-const ContactsItem = ({onContactDelete, deleting, id, name, phone }) => {
+const ContactsItem = ({ id, name, phone }) => {
+    const [deleteContact, {isLoading: isDeleting}] = useDeleteContactMutation();
+
     return (
         <li className={s.item}>
             <p> <b>{name}</b>: {phone}</p>
             <button
                 className={s.button}
                 type='button'
-                onClick={() => onContactDelete(id)}
+                onClick={() => deleteContact(id)}
+                disabled={isDeleting}
             >
-                {deleting ? 'Deleting...' : 'Delete'}
+                {isDeleting ? <ClipLoader size={10}/> : 'Delete'}
             </button>
         </li>
     );
@@ -17,39 +22,3 @@ const ContactsItem = ({onContactDelete, deleting, id, name, phone }) => {
 
 
 export default ContactsItem;
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-// ===========================================================
-// import s from './ContactsItem.module.css';
-
-// const ContactsItem = ({ id, name, phone, onContactDelete }) => {
-//     return (
-//         <li className={s.item}>
-//             <p>{name}: {phone}</p>
-//             <button
-//                 className={s.button}
-//                 type='button'
-//                 onClick={() => onContactDelete(id)}
-//             >Delete</button>
-//         </li>
-//     );
-// };
-
-
-// export default ContactsItem;
