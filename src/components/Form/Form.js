@@ -16,7 +16,7 @@ const Form = () => {
 
     const handleSubmit = e => {
         e.preventDefault();
-        data.some(({ name }) => name === params.name)
+        data.find(({ name, phone }) => params.name === name || params.phone === phone)
             ? Notify.failure(`${params.name} exists in your phonebook`)
             : addContactOnSubmit();
     };
