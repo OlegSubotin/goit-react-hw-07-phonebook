@@ -1,12 +1,13 @@
 import { useState } from 'react';
 import { Notify } from 'notiflix/build/notiflix-notify-aio';
 import ClipLoader from "react-spinners/ClipLoader";
-import { useAddContactMutation } from 'redux/contacts/contactSlice';
+import { useAddContactMutation, useFetchContactsQuery } from 'redux/contacts/contactSlice';
 import s from './Form.module.css';
 
 const Form = () => {
     const [params, setParams] = useState({ name: '', phone: '' });
     const [addContact, { isLoading }] = useAddContactMutation();
+    const { data } = useFetchContactsQuery();
 
     const handleChange = e => {
         const { name, value } = e.currentTarget;
@@ -15,8 +16,14 @@ const Form = () => {
 
     const handleSubmit = e => {
         e.preventDefault();
+        data.some(({ name }) => name === params.name)
+            ? Notify.failure(`${params.name} exists in your phonebook`)
+            : addContactOnSubmit();
+    };
+
+    const addContactOnSubmit = () => {
         addContact(params);
-        Notify.info(`${params.name} has been added to the phone book`);
+        Notify.success(`${params.name} has been added to the phone book`);
         reset();
     };
 
